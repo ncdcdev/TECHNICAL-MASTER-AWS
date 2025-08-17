@@ -20,4 +20,7 @@ export default defineConfig([
     ...pluginReact.configs.flat.recommended, // 推奨設定をベースにする
     ...pluginReact.configs.flat["jsx-runtime"], // "plugin:react/jsx-runtime" に相当する設定
   },
+  {
+    ignores: ["dist/"],
+  },
 ]);
