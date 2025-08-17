@@ -21,6 +21,6 @@ export default defineConfig([
     ...pluginReact.configs.flat["jsx-runtime"], // "plugin:react/jsx-runtime" に相当する設定
   },
   {
-    ignores: ["dist/"],
+    ignores: ["dist/", ".amplify/"],
   },
 ]);
