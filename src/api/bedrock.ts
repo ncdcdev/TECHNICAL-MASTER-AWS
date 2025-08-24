@@ -1,10 +1,15 @@
 import { client } from "./client";
 
-export const callBedrockChat = async (prompt: string, modelId: string) => {
+export const callBedrockChat = async (
+  prompt: string,
+  modelId: string,
+  conversationId: string | undefined,
+) => {
   try {
     const response = await client.queries.BedrockChat({
       prompt,
       modelId,
+      conversationId,
     });
     return response.data;
   } catch (error) {

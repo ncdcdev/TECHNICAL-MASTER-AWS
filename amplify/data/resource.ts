@@ -36,6 +36,7 @@ const schema = a.schema({
     .arguments({
       prompt: a.string().required(),
       modelId: a.string().required(),
+      conversationId: a.id(),
     })
     .returns(a.string())
     .authorization((allow) => [allow.authenticated()])

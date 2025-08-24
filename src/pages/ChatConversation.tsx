@@ -1,11 +1,12 @@
 import { useParams, useLocation } from "react-router";
 import { useEffect, useState, useRef } from "react";
 import type { Conversation, Message } from "../types/chat";
-import { sampleConversations } from "../sampleData";
+import { fetchConversation } from "../api/chat";
 import MessageList from "../components/ui/MessageList";
 import ChatInput from "../components/ui/ChatInput";
 import { callBedrockChat } from "../api/bedrock";
 import { createChatTitle } from "../utils";
+import { useConversationsContext } from "../context/ConversationsContext";
 
 export default function ChatConversation() {
   const { conversationId } = useParams();
@@ -15,12 +16,37 @@ export default function ChatConversation() {
   const { state: initChatDetail } = location;
   const initRenderRef = useRef(true);
   const [isLoadingAIResponse, setIsLoadingAIResponse] = useState(false);
+  const [isConversationLoading, setIsConversationLoading] = useState(true);
+  const { notifyConversationCreated } = useConversationsContext();
 
-  const getAIResponse = async (message: string, model: string) => {
+  // 会話履歴を取得する関数
+  const getConversation = async () => {
+    if (!conversationId) return;
+    setIsConversationLoading(true);
+    try {
+      const conversation = await fetchConversation(conversationId);
+      setConversation(conversation);
+    } catch (error) {
+      console.error("指定した会話の取得に失敗しました:", error);
+      setConversation(null);
+    } finally {
+      setIsConversationLoading(false);
+    }
+  };
+
+  const getAIResponse = async (
+    message: string,
+    model: string,
+    isFirstMessage = false,
+  ) => {
     setIsLoadingAIResponse(true);
     let newAssistantMessage: Message;
     try {
-      const aiResponse = await callBedrockChat(message, model);
+      const aiResponse = await callBedrockChat(
+        message,
+        model,
+        conversationId ?? "",
+      );
 
       newAssistantMessage = {
         id: `message-${self.crypto.randomUUID()}`,
@@ -28,6 +54,9 @@ export default function ChatConversation() {
         content: aiResponse || "AIからの応答がありません",
         timestamp: new Date(),
       };
+      if (isFirstMessage) {
+        await notifyConversationCreated();
+      }
     } catch (error) {
       console.error("AI応答の取得に失敗しました:", error);
       newAssistantMessage = {
@@ -68,13 +97,10 @@ export default function ChatConversation() {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      getAIResponse(message, model); // ここにgetAIResponseを追加
+      setIsConversationLoading(false);
+      getAIResponse(message, model, true);
     } else {
-      // TODO 実際のアプリではAPIからデータを取得する
-      const foundConversation = sampleConversations.find(
-        (c) => c.id === conversationId,
-      );
-      setConversation(foundConversation || null);
+      getConversation();
     }
   }, [conversationId, initChatDetail]);
 
@@ -83,6 +109,17 @@ export default function ChatConversation() {
       messagesEndRef.current?.scrollIntoView();
     }
   }, [conversation]);
+
+  if (isConversationLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="flex gap-2 text-center">
+          <div className="border-cream-500 mb-4 h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
+          <div className="text-xl font-bold">会話を読み込み中...</div>
+        </div>
+      </div>
+    );
+  }
 
   if (!conversation) {
     return (
