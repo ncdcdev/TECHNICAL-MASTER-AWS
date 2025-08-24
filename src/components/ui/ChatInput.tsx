@@ -4,11 +4,13 @@ import { type FormEvent, useState } from "react";
 interface ChatInputProps {
   sendMessage: (message: string, model: string) => void;
   initialModel?: string;
+  disabled?: boolean;
 }
 
 export default function ChatInput({
   sendMessage,
   initialModel,
+  disabled,
 }: ChatInputProps) {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -74,7 +76,7 @@ export default function ChatInput({
           </div>
           <button
             type="submit"
-            disabled={message.trim() === ""}
+            disabled={disabled || message.trim() === ""} // ここでdisabledを使用
             className="flex items-center justify-center rounded-md bg-emerald-600 p-2 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:hover:bg-emerald-600"
           >
             <FaArrowUp className="h-5 w-5" />

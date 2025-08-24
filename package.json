@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.11.2",
+    "@aws-sdk/client-bedrock-runtime": "^3.873.0",
     "@tailwindcss/vite": "^4.1.11",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

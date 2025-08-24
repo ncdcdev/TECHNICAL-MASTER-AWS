@@ -1,9 +1,11 @@
 import { useParams, useLocation } from "react-router";
 import { useEffect, useState, useRef } from "react";
-import type { Conversation } from "../types/chat";
+import type { Conversation, Message } from "../types/chat";
 import { sampleConversations } from "../sampleData";
 import MessageList from "../components/ui/MessageList";
 import ChatInput from "../components/ui/ChatInput";
+import { callBedrockChat } from "../api/bedrock";
+import { createChatTitle } from "../utils";
 
 export default function ChatConversation() {
   const { conversationId } = useParams();
@@ -11,16 +13,70 @@ export default function ChatConversation() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { state: initChatDetail } = location;
+  const initRenderRef = useRef(true);
+  const [isLoadingAIResponse, setIsLoadingAIResponse] = useState(false);
+
+  const getAIResponse = async (message: string, model: string) => {
+    setIsLoadingAIResponse(true);
+    let newAssistantMessage: Message;
+    try {
+      const aiResponse = await callBedrockChat(message, model);
+
+      newAssistantMessage = {
+        id: `message-${self.crypto.randomUUID()}`,
+        role: "assistant",
+        content: aiResponse || "AIからの応答がありません",
+        timestamp: new Date(),
+      };
+    } catch (error) {
+      console.error("AI応答の取得に失敗しました:", error);
+      newAssistantMessage = {
+        id: `message-${self.crypto.randomUUID()}`,
+        role: "assistant",
+        content: "AIからの応答の取得に失敗しました。後ほど再試行してください。",
+        timestamp: new Date(),
+      };
+    } finally {
+      setConversation((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          messages: [...prev.messages, newAssistantMessage],
+        };
+      });
+      setIsLoadingAIResponse(false);
+    }
+  };
 
   useEffect(() => {
-    // TODO 実際のアプリではAPIからデータを取得する
-    const foundConversation = sampleConversations.find(
-      (c) => c.id === conversationId,
-    );
-    if (foundConversation) {
-      setConversation(foundConversation);
+    if (!conversationId) return;
+    if (initChatDetail) {
+      if (!initRenderRef.current) return;
+      initRenderRef.current = false;
+      const { message, model } = initChatDetail;
+      setConversation({
+        id: conversationId,
+        title: createChatTitle(message),
+        messages: [
+          {
+            id: `message-${self.crypto.randomUUID()}`,
+            role: "user",
+            content: message,
+            timestamp: new Date(),
+          },
+        ],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      getAIResponse(message, model); // ここにgetAIResponseを追加
+    } else {
+      // TODO 実際のアプリではAPIからデータを取得する
+      const foundConversation = sampleConversations.find(
+        (c) => c.id === conversationId,
+      );
+      setConversation(foundConversation || null);
     }
-  }, [conversationId]);
+  }, [conversationId, initChatDetail]);
 
   useEffect(() => {
     if (conversation?.messages.length) {
@@ -37,34 +93,23 @@ export default function ChatConversation() {
       </div>
     );
   }
-  const sendMessage = (message: string) => {
-    const conversationIndex = sampleConversations.findIndex(
-      (conversation) => conversation.id === conversationId,
-    );
-    if (conversationIndex === -1) {
-      return;
-    }
-    const updatedConversation = {
-      ...sampleConversations[conversationIndex],
-      messages: [
-        ...sampleConversations[conversationIndex].messages,
-        {
-          id: `message-${self.crypto.randomUUID()}`,
-          role: "user" as const,
-          content: message,
-          timestamp: new Date(),
-        },
-        {
-          id: `message-${self.crypto.randomUUID()}`,
-          role: "assistant" as const,
-          content: "AIのダミーメッセージです",
-          timestamp: new Date(),
-        },
-      ],
-      updatedAt: new Date(),
+  const sendMessage = async (message: string, model: string) => {
+    const newUserMessage: Message = {
+      id: `message-${self.crypto.randomUUID()}`,
+      role: "user",
+      content: message,
+      timestamp: new Date(),
     };
-    sampleConversations[conversationIndex] = updatedConversation;
-    setConversation(updatedConversation);
+
+    setConversation((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        messages: [...prev.messages, newUserMessage],
+      };
+    });
+
+    await getAIResponse(message, model);
   };
   return (
     <div className="flex h-screen flex-col">
@@ -75,6 +120,12 @@ export default function ChatConversation() {
       <div className="flex flex-1 justify-center overflow-y-auto bg-white">
         <div className="w-3xl">
           <MessageList messages={conversation.messages} />
+          {/* ローディングインジケーターの表示を追加 */}
+          {isLoadingAIResponse && (
+            <div className="px-6">
+              <div className="border-cream-500 h-5 w-5 animate-spin rounded-full border-2 border-t-transparent" />
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
       </div>
@@ -82,6 +133,7 @@ export default function ChatConversation() {
         <ChatInput
           sendMessage={sendMessage}
           initialModel={initChatDetail?.model}
+          disabled={isLoadingAIResponse}
         />
       </div>
     </div>
