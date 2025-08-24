@@ -23,3 +23,25 @@ backend.bedrockChatFunction.resources.lambda.addToRolePolicy(
     ],
   }),
 );
+
+// DynamoDBテーブルへのアクセス権限を追加
+backend.bedrockChatFunction.resources.lambda.addToRolePolicy(
+  new PolicyStatement({
+    effect: Effect.ALLOW,
+    actions: ["dynamodb:PutItem", "dynamodb:UpdateItem", "dynamodb:Query"],
+    resources: [
+      backend.data.resources.tables["Conversation"].tableArn,
+      backend.data.resources.tables["Message"].tableArn,
+    ],
+  }),
+);
+
+// 環境変数にテーブル名を設定
+backend.bedrockChatFunction.addEnvironment(
+  "CONVERSATION_TABLE_NAME",
+  backend.data.resources.tables["Conversation"].tableName,
+);
+backend.bedrockChatFunction.addEnvironment(
+  "MESSAGE_TABLE_NAME",
+  backend.data.resources.tables["Message"].tableName,
+);
