@@ -47,4 +47,5 @@ export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
+  logging: true,
 });

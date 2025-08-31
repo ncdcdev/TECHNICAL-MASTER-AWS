@@ -4,6 +4,7 @@ import { data } from "./data/resource";
 import { helloWorldFunction } from "./function/helloWorld/resource";
 import { bedrockChatFunction } from "./function/bedrockChat/resource";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import { Tags } from "aws-cdk-lib";
 
 export const backend = defineBackend({
   auth,
@@ -11,6 +12,12 @@ export const backend = defineBackend({
   helloWorldFunction,
   bedrockChatFunction,
 });
+
+// タグの設定
+const tags = Tags.of(backend.stack);
+tags.add("Billing", "aws-ai-chat");
+tags.add("Project", "aws-ai-chat");
+tags.add("Environment", "development");
 
 backend.bedrockChatFunction.resources.lambda.addToRolePolicy(
   new PolicyStatement({
