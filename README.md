@@ -1,69 +1,36 @@
-# React + TypeScript + Vite
+# TECHNICAL MASTER はじめてのAWSモダンアプリ開発入門 - サンプルコード
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+本リポジトリは「TECHNICAL MASTER はじめてのAWSモダンアプリ開発入門」のサンプルコードです。
 
-Currently, two official plugins are available:
+## プロジェクト概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+このプロジェクトはAWSのサービスを活用したAIチャットアプリケーションです。書籍を通して以下の技術スタックを学習できます。
 
-## Expanding the ESLint configuration
+- フロントエンド
+  - AWS Amplify Gen2 (React + TypeScript + Vite + TailwindCSS)
+- バックエンド
+  - AWS AppSync
+  - AWS Lambda (TypeScript)
+- AI機能
+  - Amazon Bedrock
+- データベース
+  - Amazon DynamoDB
+- 認証
+  - Amazon Cognito
+- CI/CD
+  - CI: GitHub Actions
+  - CD: AWS Amplify Gen2 + AWS CDK
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 章別ブランチ
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+各章のコードは以下のブランチで確認できます。
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [Chapter 2](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-2) - はじめてのAWSアプリ開発
+- [Chapter 3](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-3) - 開発環境の本格的な整備
+- [Chapter 4](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-4) - バックエンドの基礎の開発
+- [Chapter 5](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-5) - フロントエンド開発
+- [Chapter 6](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-6) - AIチャット機能の開発
+- [Chapter 7](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-7) - アプリケーションの完成
+- [Chapter 8](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-8) - CI/CD パイプラインの構築
+- [Chapter 9](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-9) - 運用と監視
+- [Chapter 10](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-10) - その他の実装パターン
