@@ -22,12 +22,12 @@ export default function ChatInput({
   };
   const models = [
     {
-      id: "apac.anthropic.claude-3-haiku-20240307-v1:0",
-      name: "Claude 3 Haiku v1",
+      id: "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+      name: "Claude Haiku 4.5 v1",
     },
     {
-      id: "apac.anthropic.claude-sonnet-4-20250514-v1:0",
-      name: "Claude Sonnet 4 v1",
+      id: "global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+      name: "Claude Sonnet 4.5 v1",
     },
     {
       id: "apac.amazon.nova-pro-v1:0",
