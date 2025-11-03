@@ -5,7 +5,7 @@ import { helloWorldFunction } from "./function/helloWorld/resource";
 import { bedrockChatFunction } from "./function/bedrockChat/resource";
 import { Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Tags } from "aws-cdk-lib";
-// 第10章 REST API用のインポート
+// 10章 REST API用のインポート
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as path from "path";
@@ -59,7 +59,7 @@ backend.bedrockChatFunction.addEnvironment(
   backend.data.resources.tables["Message"].tableName,
 );
 
-// 第10章: REST API用のスタックを作成
+// 10章: REST API用のスタックを作成
 const ch10ApiStack = backend.createStack("Chapter10RestApiStack");
 
 // Lambda関数を作成
