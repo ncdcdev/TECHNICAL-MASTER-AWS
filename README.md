@@ -23,7 +23,7 @@
 
 ## 章別ブランチ
 
-各章のコードは以下のブランチで確認できます。
+各章の終了時点のコードを以下のブランチで確認できます。
 
 - [Chapter 2](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-2) - はじめてのAWSアプリ開発
 - [Chapter 3](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/tree/chapter-3) - 開発環境の本格的な整備
