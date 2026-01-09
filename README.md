@@ -11,9 +11,9 @@
 
 本書において、一部記載に誤りがありました。お詫び申し上げるとともに、以下に訂正箇所を記載いたします。
 
-### `amplify.yaml` の誤植
+### `amplify.yml` の誤植
 
-以下の箇所の`amplify.yaml` のコードに誤植がありました。正しいコードは本リポジトリのコードを参考にしてください。
+以下の箇所の`amplify.yml` のコードに誤植がありました。正しいコードは本リポジトリのコードを参考にしてください。
 
   - Chapter2(p38) : [正しいコード](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/blob/chapter-2/amplify.yml)
   - Chapter4(p98) : [正しいコード](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/blob/chapter-4/amplify.yml)
