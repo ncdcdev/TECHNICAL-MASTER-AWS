@@ -19,6 +19,19 @@
   - Chapter4(p98) : [正しいコード](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/blob/chapter-4/amplify.yml)
   - Chapter8(p286) : [正しいコード](https://github.com/ncdcdev/TECHNICAL-MASTER-AWS/blob/chapter-8/amplify.yml)
 
+### Chapter6の226ページの誤植（文の重複）
+Chapter6、p226の本文3~4行目に誤植がありました。「APIが呼び出されてしまいます。」という余計な記述がありました。
+
+**誤（書籍の記載）:**
+```
+今回のようにAPIを呼び出す処理をuseEffect内に書いてしまうと、同じAPIが2回呼び出されてしまいます。APIが呼び出されてしまいます。
+```
+
+**正（訂正後）:**
+```
+今回のようにAPIを呼び出す処理をuseEffect内に書いてしまうと、同じAPIが2回呼び出されてしまいます。
+```
+
 ## プロジェクト概要
 
 このプロジェクトはAWSのサービスを活用したAIチャットアプリケーションです。書籍を通して以下の技術スタックを学習できます。
